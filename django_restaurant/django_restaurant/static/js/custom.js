@@ -34,16 +34,16 @@ $(document).ready(function() {
                     $('#qty-' +food_id).html(response.qty)
 
                     // cart total amount
-                    if(window.location.pathname == '/cart/'){
+                    
                     total_amount(
 
                         response.cart_amount['subtotal'],
-                        response.cart_amount['tax'],
+                        response.cart_amount['tax_dict'],
                         response.cart_amount['total']
                         
                         )
 
-                    }
+                    
 
                 }
 
@@ -104,14 +104,17 @@ $(document).ready(function() {
                     total_amount(
 
                         response.cart_amount['subtotal'],
-                        response.cart_amount['tax'],
+                        response.cart_amount['tax_dict'],
                         response.cart_amount['total']
                     )
+
+                    
                 
                     
                     if(window.location.pathname == '/cart/'){
                     removeCartItem(response.qty, cart_id)
                     checkEmptyCart()
+                    window.location.reload()
 
                     }
 
@@ -153,7 +156,7 @@ $(document).ready(function() {
                 total_amount(
 
                     response.cart_amount['subtotal'],
-                    response.cart_amount['tax'],
+                    response.cart_amount['tax_dict'],
                     response.cart_amount['total']
                 )
 
@@ -161,6 +164,7 @@ $(document).ready(function() {
 
                 removeCartItem(0, cart_id)
                 checkEmptyCart()
+                window.location.reload()
 
              
             }
@@ -175,7 +179,7 @@ $(document).ready(function() {
         
         if(cartItemQty <= 0) {
           //remove the cart utem
-          document.getElementById("cart-item-" +cart_id).remove()
+          document.getElementById("cart-item-" + cart_id).remove()
 
         }
 
@@ -200,10 +204,117 @@ $(document).ready(function() {
         if(window.location.pathname == '/cart/') {
 
         $('#subtotal').html(subtotal)
-        $('#tax').html(tax)
         $('#total').html(total)
 
+        for(key1 in tax_dict){
+            console.log(tax_dict[key1])
+            for(key2 in tax_dict[key1]){
+                // console.log(tax_dict[key1][key2])
+                $('#tax-'+key1).html(tax_dict[key1][key2])
+            }
         }
+        
+
+        }
+
+        
+          window.location.reload()
     }
+
+
+    //add hours
+    $('.add_hour').on('click', function(e) {
+
+        e.preventDefault()
+        var day = document.getElementById('id_day').value
+        var from_hour = document.getElementById('id_from_hour').value
+        var to_hour = document.getElementById('id_to_hour').value
+        var is_closed = document.getElementById('id_is_closed').checked
+        var csrf_token = $('input[name=csrfmiddlewaretoken]').val()
+        var url = document.getElementById('add_hour_url').value
+
+        
+        
+        if(is_closed) {
+
+            is_closed = 'True'
+            condition = "day != ''"
+
+        }else {
+
+            is_closed = 'False'
+            condition = "day != '' && from_hour != '' && to_hour != ''"
+        }
+
+
+        if(eval(condition) ) {
+
+            $.ajax({
+
+                type: 'POST',
+                url: url,
+                data: {
+
+                    'day': day,
+                    'from_hour': from_hour,
+                    'to_hour': to_hour,
+                    'is_closed': is_closed,
+                    'csrfmiddlewaretoken': csrf_token
+                },
+
+                success: function(response) {
+
+                    if(response.status == 'success'){
+
+                        if(response.is_closed == 'Closed') {
+
+                            html = '<tr id="hour- '+ response.id +'"><td><b>'+ response.day +'</b></td><td>Closed</td><td><a href="#" class="remove_hour" data-url="/accounts/vendor/opening-hours/delete/'+ response.id +'/"><i class="fa fa-trash-alt text-danger"></i></a></td></tr>'
+
+                        }else {
+
+                            html = '<tr id="hour- '+ response.id +'"><td><b>'+ response.day +'</b></td><td>'+ response.from_hour +' - '+ response.to_hour +'</td><td><a href="#" class="remove_hour" data-url="/accounts/vendor/opening-hours/delete/'+ response.id +'/"><i class="fa fa-trash-alt text-danger"></i></a></td></tr>'
+                        }
+
+                     
+                      $('.opening_hours').append(html)
+                      document.getElementById("opening_hours").reset()
+
+                    }else {
+
+                        Swal.fire(response.message, '', 'error')
+                    }
+                }
+            })
+
+        }else {
+
+            Swal.fire('Please add all fields', '', 'secondary')
+        }
+
+
+    })
+
+    //remove hour
+    $(document).on('click', '.remove_hour', function(e){
+
+        e.preventDefault()
+        url = $(this).attr('data-url')
+
+        $.ajax({
+
+            type: 'GET',
+            url: url,
+
+            success: function(response) {
+
+                console.log(response);
+
+                if(response.status == 'success' || response.status != 0) {
+
+                    document.getElementById('hour-' + response.id).remove()
+                }
+            }
+        })
+    })
 
 });

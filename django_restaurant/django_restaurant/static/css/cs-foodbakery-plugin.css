@@ -2009,7 +2009,7 @@ div.daterangepicker { border: 1px solid #eceef4; -webkit-box-shadow: none; box-s
 .wp-foodbakery .listing.grid-slider .rating-star .rating-box:before, .location-holder.modern a.more-btn, .grid-slider .swiper-button-prev:hover i, .grid-slider .swiper-button-next:hover i,
 .company-holder.simple .company-logo .text-holder .post-title h6 a:hover
 {
-color:rgb(235, 104, 37) !important;
+color: #8c7332 !important;
 }
 .bgcolor, .chosen-container .chosen-results li.highlighted, .order-sort-results ul li:hover:before, .bootstrap-datetimepicker-widget .btn-primary, 
 .booking-info-sec .contact-info .field-holder .submit-btn input[type="submit"], .user-order input[type="submit"], .main-post .column-text form .field-holder .field-btn, 
@@ -2017,19 +2017,19 @@ color:rgb(235, 104, 37) !important;
 .wp-foodbakery .listing.grid-slider .list-post:hover:before, #footer.footer-style-4 .social-media > li > a:hover, #header.transparent-header.court.pinned .main-header,
 .main-location > ul > li.choose-location ul ul::-webkit-scrollbar-thumb, .icon-boxes.fancy:hover .img-holder figure i
 {
-background-color:rgb(235, 104, 37) !important;
+background-color: #8c7332 !important;
 }
 .max-location-height::-webkit-scrollbar-thumb, .slicknav_nav::-webkit-scrollbar-thumb
 {
-background-color:rgb(235, 104, 37) !important;
+background-color: #8c7332 !important;
 }        
 .br-color, .listing .list-option .viewmenu-btn, .widget-text .content-btn, .load-more-btn, .blog-detail .blockquote-hloder, .blog-large .read-more, .delivery-list .button a:hover, .upload-file button[type='button'], .widget_tag_cloud .tagcloud a:hover, .icon-boxes.modern figure:before, .icon-boxes.modern figure, .listing.grid-listing .listing-footer a.ordernow-btn:hover, .transparent-header .main-header .login-option a.get-start-btn:hover, #footer.footer-style-4 .social-media > li > a:hover, .location-holder.modern a.more-btn
 {
-border-color:rgb(235, 104, 37) !important;
+border-color: #8c7332 !important;
 }
 .restaurant-menu-nav.nav-tabs > li a:hover, .restaurant-menu-nav.nav-tabs > li a:focus, .restaurant-menu-nav.nav-tabs > li.active a
 {
-border-top-color:rgb(235, 104, 37) !important;
+border-top-color: #8c7332 !important;
 }   
 body{
 background:#ebedf3 !important;	    }
@@ -2076,7 +2076,7 @@ font:700 Normal  16px/20px "Montserrat", sans-serif !important;letter-spacing: 1
 font:700 Normal  16px/20px "Montserrat", sans-serif !important;letter-spacing: 1px !important;text-transform: capitalize !important;color: #adb0b6 !important;	    }
 #header .main-header
 {
-background-color: #f0932b !important;
+background-color: rgb(38, 38, 38) !important;
 }
 #header .main-navigation ul ul li a,
 #header .main-navigation ul ul ul li a
@@ -3526,3 +3526,4 @@ ul.user-controls li:first-child i { color: #0f0851; }
 .woocommerce .place-order button.button:hover {background: #c33332;}
 
 /* WOOCOMMERCE END */
+

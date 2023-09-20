@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'vendor',
     'menu',
     'marketplace',
+    'customers',
+    'orders'
 ]
 
 MIDDLEWARE = [
@@ -52,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'orders.request_object.RequestObjectMiddleware'
 ]
 
 ROOT_URLCONF = 'django_restaurant.urls'
@@ -70,6 +73,8 @@ TEMPLATES = [
                 'accounts.context_processors.get_vendor',
                 'marketplace.context_processors.cart_counter',
                 'marketplace.context_processors.cart_total_amount',
+                'accounts.context_processors.get_user_profile',
+                'accounts.context_processors.paypal_client_id'
             ],
         },
     },
@@ -159,5 +164,9 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS=True
 DEFAULT_FROM_EMAIL = 'djangoRestaurant <iradisavljevic168@gmail.com>'
+
+PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
 
 

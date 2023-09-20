@@ -4,3 +4,14 @@
     cursor: pointer;
 }
 
+#opening_hours select {
+
+    padding: 5px 10px !important;
+}
+
+
+.btn-chk   {
+
+    background-color: #8c7332 !important;
+  }
+

@@ -6,6 +6,11 @@ urlpatterns = [
     path('', views.marketplace, name='marketplace'),
     #CART
     path('cart/', views.cart, name='cart'),
+
+    #CHECKOUT
+    path('checkout/', views.checkout, name='checkout'),
+    #SEARCH
+    path('search/', views.search, name='search'),
     path('<slug:vendor_slug>/', views.vendor_details, name='vendor_details'),
 
     
@@ -16,7 +21,9 @@ urlpatterns = [
     path('decrease_cart/<int:food_id>/', views.decrease_cart, name='decrease_cart'),
 
     #DELETE CART
-    path('delete_cart/<int:cart_id>/', views.delete_cart, name='delete_cart')
+    path('delete_cart/<int:cart_id>/', views.delete_cart, name='delete_cart'),
+
+    
 
     
 ]
