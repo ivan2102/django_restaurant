@@ -7,9 +7,10 @@ from orders.models import OrderedFood
 from orders.models import Payment
 from orders.models import Order
 from orders.forms import OrderForm
-from .utils import generate_order_number
+from .utils import generate_order_number, order_vendor_total
 from accounts.utils import send_notification
 from django.contrib.auth.decorators import login_required
+from django.contrib.sites.shortcuts import get_current_site
 
 from marketplace.models import FoodCart
 from marketplace.context_processors import cart_total_amount
@@ -148,11 +149,24 @@ def payments(request):
     # Send the order confirmation mail to the customer
     mail_subject = 'Order complete! Thank you so much for choosing us!'
     mail_template = 'orders/order_confirmation_email.html'
+
+    ordered_food = OrderedFood.objects.filter(order=order)
+
+    customer_subtotal = 0
+
+    for item in ordered_food:
+     customer_subtotal += (item.quantity * item.price)
+     tax_data = json.loads(order.tax_data)
+
     context = {
 
         'user': request.user,
         'order': order,
-        'to_email': order.email
+        'to_email': order.email,
+        'ordered_food': ordered_food,
+        'domain': get_current_site(request),
+        'customer_subtotal': customer_subtotal,
+        'tax_data': tax_data
     }
     send_notification(mail_subject, mail_template, context)
    
@@ -164,10 +178,18 @@ def payments(request):
     for item in cart_items:
      if item.fooditem.vendor.user.email not in to_emails:
       to_emails.append(item.fooditem.vendor.user.email)
+
+
+      ordered_food_vendor = OrderedFood.objects.filter(order=order, fooditem__vendor=item.fooditem.vendor)
+
      context = {
 
        'order': order,
-       'to_email': to_emails
+       'to_email': item.fooditem.vendor.user.email,
+       'ordered_food_vendor': ordered_food_vendor,
+       'vendor_subtotal': order_vendor_total(order, item.fooditem.vendor.id)['subtotal'],
+        'tax_data': order_vendor_total(order, item.fooditem.vendor.id)['tax_dict'],
+        'vendor_total': order_vendor_total(order, item.fooditem.vendor.id)['total']
      }
      send_notification(mail_subject, mail_template, context)
     

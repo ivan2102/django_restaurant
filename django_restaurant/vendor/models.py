@@ -45,33 +45,23 @@ class Vendor(models.Model):
     
     def save(self, *args, **kwargs):
         if self.pk is not None:
-            #Update
-            origin = Vendor.objects.get(pk=self.pk)
-            if origin.is_approved != self.is_approved:
+            # Update
+            orig = Vendor.objects.get(pk=self.pk)
+            if orig.is_approved != self.is_approved:
+                mail_template = 'accounts/emails/admin_approval_email.html'
+                context = {
+                    'user': self.user,
+                    'is_approved': self.is_approved,
+                    'to_email': self.user.email,
+                }
                 if self.is_approved == True:
-                    #Send notification email
-                    mail_subject = 'Congratulations! Your vendor account has been approved'
-                    mail_template = 'accounts/emails/admin_approval_email.html'
-                    context = {
-
-                        'user': self.user,
-                        'is_approved': self.is_approved
-                    }
+                    # Send notification email
+                    mail_subject = "Congratulations! Your restaurant has been approved."
                     send_notification(mail_subject, mail_template, context)
-
                 else:
-                    #Send notification email
-                    mail_subject = 'We are sorry, you are not eligible to publishing your food menu on our restaurant'
-                    mail_template = 'accounts/emails/admin_approval_email.html'
-                    context = {
-
-                        'user': self.user,
-                        'is_approved': self.is_approved,
-                        'to_email': self.user.email
-                    }
+                    # Send notification email
+                    mail_subject = "We're sorry! You are not eligible for publishing your food menu on our marketplace."
                     send_notification(mail_subject, mail_template, context)
-
-
         return super(Vendor, self).save(*args, **kwargs)
 
 DAYS = [

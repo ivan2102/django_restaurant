@@ -55,7 +55,7 @@ def registerUser(request):
       mail_subject = 'Please activate your account'
       email_template = 'accounts/emails/account_verification_email.html'
       send_verification_email(request, user, mail_subject, email_template)
-      messages.success(request, 'User created successfully.')
+      messages.success(request, 'User created successfully. Please check your email address to activate your account!')
       return redirect('registerUser')
     
     else:
@@ -98,11 +98,11 @@ def registerVendor(request):
        vendor.user_profile = user_profile
        vendor.save()
 
-       # Send verification email
+        #Send verification email
        mail_subject = 'Please activate your account'
        email_template = 'accounts/emails/account_verification_email.html'
        send_verification_email(request, user, mail_subject, email_template)
-       messages.success(request, 'Your vendor has been registered successfully')
+       messages.success(request, 'Your vendor has been registered successfully. Please check your email address and activate your account!')
        return redirect('registerVendor')
 
 
@@ -114,13 +114,13 @@ def registerVendor(request):
        form = UserForm()
        vendor_form = VendorForm()
 
-       context = {
+     context = {
 
-         'form': form,
-         'vendor_form': vendor_form
-       }
+           'form': form,
+           'vendor_form': vendor_form
+        }
 
-       return render(request, 'accounts/registerVendor.html', context)
+     return render(request, 'accounts/registerVendor.html', context)
      
 
 def activate(request, uidb64, token):

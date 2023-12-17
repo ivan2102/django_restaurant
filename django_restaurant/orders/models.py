@@ -1,3 +1,4 @@
+from math import ceil
 from django.db import models
 import json
 from accounts.models import User
@@ -82,7 +83,7 @@ class Order(models.Model):
                 tax_dict.update(val)
 
                 # calculate tax
-                # {'CGST': {'9.00': '6.03'}, 'SGST': {'7.00': '4.69'}}
+                
                 for i in val:
                     for j in val[i]:
                         tax += float(val[i][j])

@@ -85,26 +85,26 @@ def fooditems_by_category(request, pk=None):
 @user_passes_test(check_role_vendor) 
 
 def add_category(request):
-
     if request.method == 'POST':
-     form = CategoryForm(request.POST)
-     if form.is_valid():
-        category_name = form.cleaned_data['category_name']
-        category = form.save(commit=False)
-        category.vendor = get_vendor(request)
-        category.slug = slugify(category_name)
-        form.save()
-        messages.success(request, 'Category added successfully')
-        return redirect('menu_builder')
-     
-     else:
-        print(form.errors)
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            category_name = form.cleaned_data['category_name']
+            category = form.save(commit=False)
+            category.vendor = get_vendor(request)
+            
+            category.save() # here the category id will be generated
+            category.slug = slugify(category_name)+ '-' +str(category.id) # chicken-15
+            category.save()
+            messages.success(request, 'Category added successfully!')
+            return redirect('menu_builder')
+        else:
+            print(form.errors)
+
     else:
         form = CategoryForm()
-        context = {
-           'form': form
-        }
-     
+    context = {
+        'form': form,
+    }
     return render(request, 'vendor/add_category.html', context)
 
 @login_required(login_url = 'login')
@@ -286,7 +286,7 @@ def order_details(request, order_number):
 
 def vendor_orders(request):
    vendor = Vendor.objects.get(user=request.user)
-   orders = Order.objects.filter(is_ordered=True).order_by('created_at')
+   orders = Order.objects.filter(vendors__in=[vendor.id], is_ordered=True).order_by('created_at')
 
    context = {
 
