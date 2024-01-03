@@ -3,25 +3,25 @@ from django.dispatch import receiver
 from .models import User, UserProfile
 
 
-# Django signals for automatically create profile user
-# Receiver class 
-#@receiver(post_save, sender=User)
-#def post_save_create_profile_receiver(sender, instance, created, **kwargs):
+ #Django signals for automatically create profile user
+ #Receiver class 
+@receiver(post_save, sender=User)
+def post_save_create_profile_receiver(sender, instance, created, **kwargs):
          
- #        print(created)
+         print(created)
 
-   #      if created:
-   #          UserProfile.objects.create(user=instance)
+         if created:
+             UserProfile.objects.create(user=instance)
              
 
-   #      else:
-   #           try: 
-   #             profile = UserProfile.objects.get(user=instance)
-   #              profile.save()
+         else:
+             try: 
+                profile = UserProfile.objects.get(user=instance)
+                profile.save()
 
-   #           except:
+             except:
             # Create the user profile if not already created
-   #            UserProfile.objects.create(user=instance)
+               UserProfile.objects.create(user=instance)
                 
 
-       # post_save.connect(post_save_create_profile_receiver, sender=User)
+         post_save.connect(post_save_create_profile_receiver, sender=User)
